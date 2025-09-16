@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Custom Playlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            column-gap: 1px;
+            row-gap: 1px;
+        }
+        .song {
+            margin: 0;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            text-align: center;
+            page-break-inside: avoid;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: none;
+            border-radius: 0;
+            display: block;
+        }
+        @media print {
+            body { padding: 0; background: white; }
+            .song { margin: 0; box-shadow: none; border: none; }
+            @page {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="song">
+        <img src="https://scannables.scdn.co/uri/plain/png/000000/white/640/spotify:track:69Kzq3FMkDwiSFBQzRckFD" alt="Spotify Code">
+    </div>
+    <div class="song">
+        <img src="https://scannables.scdn.co/uri/plain/png/000000/white/640/spotify:track:3wUMcPzXcmaeW8QxTdyXQO" alt="Spotify Code">
+    </div>
+</body>
+</html>

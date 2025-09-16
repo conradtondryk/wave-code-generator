@@ -1,0 +1,16 @@
+[package]
+name = "wave-code-generator"
+version = "0.1.0"
+edition = "2021"
+authors = ["Your Name <your.email@example.com>"]
+description = "Generate printable HTML pages with Spotify wave codes"
+license = "MIT"
+
+[[bin]]
+name = "wave-gen"
+path = "src/bin/main.rs"
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
