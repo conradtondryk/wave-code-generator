@@ -12,10 +12,10 @@ fn main() {
     // Generate HTML page
     let html = generate_wave_codes_page(&track_ids, Some("Example Wave Codes"));
 
-    // Save to file
-    match std::fs::write("example_wave_codes.html", html) {
+    // Save to output folder
+    match std::fs::write("output/example.html", html) {
         Ok(_) => println!(
-            "Generated example_wave_codes.html with {} tracks!",
+            "Generated output/example.html with {} tracks!",
             track_ids.len()
         ),
         Err(e) => eprintln!("Failed to write HTML file: {}", e),

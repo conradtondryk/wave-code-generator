@@ -24,11 +24,10 @@
 //! std::fs::write("wave_codes.html", html).expect("Failed to write HTML file");
 //! ```
 
-use serde::{Deserialize, Serialize};
 use std::fmt::Write;
 
 /// Configuration for generating wave codes
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone)]
 pub struct WaveCodeConfig {
     /// Page title
     pub title: String,
@@ -95,7 +94,7 @@ pub fn generate_css(config: &WaveCodeConfig) -> String {
     format!(
         r#"        body {{
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin: 10px;
             padding: 0;
             background-color: {};
             display: grid;
@@ -119,10 +118,10 @@ pub fn generate_css(config: &WaveCodeConfig) -> String {
             display: block;
         }}
         @media print {{
-            body {{ padding: 0; background: white; }}
+            body {{ padding: 0; margin: 0; background: white; }}
             .song {{ margin: 0; box-shadow: none; border: none; }}
             @page {{
-                margin: 0;
+                margin: 10px;
             }}
         }}"#,
         config.background_color, config.columns
@@ -222,23 +221,6 @@ pub fn load_track_ids_from_file(file_path: &str) -> Result<Vec<String>, std::io:
         .map(|line| line.trim().to_string())
         .filter(|line| !line.is_empty())
         .collect();
-    Ok(track_ids)
-}
-
-/// Load track IDs from a JSON file
-///
-/// # Arguments
-///
-/// * `file_path` - Path to the JSON file containing track IDs
-///
-/// # Returns
-///
-/// Result containing vector of track IDs or an error
-pub fn load_track_ids_from_json(
-    file_path: &str,
-) -> Result<Vec<String>, Box<dyn std::error::Error>> {
-    let content = std::fs::read_to_string(file_path)?;
-    let track_ids: Vec<String> = serde_json::from_str(&content)?;
     Ok(track_ids)
 }
 

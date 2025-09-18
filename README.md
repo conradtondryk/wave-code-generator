@@ -1,15 +1,15 @@
 # Wave Code Generator
 
-A blazingly fast Rust library and CLI tool for generating printable HTML pages with Spotify wave codes arranged in a clean, customizable grid layout.
+A blazingly fast Rust library and CLI tool for generating printable HTML pages with Spotify wave codes arranged in a clean 4-column grid layout.
 
 ## Features
 
 - 🚀 **Fast**: Written in Rust for maximum performance
-- 🎨 **Customizable**: Configurable grid layouts (1-12 columns), image sizes, and styling
 - 🖨️ **Print-optimized**: Clean CSS with no margins or borders for perfect printing
 - 📱 **Responsive**: Works great on desktop and mobile
 - 🔧 **CLI & Library**: Use as a command-line tool or integrate into your Rust projects
-- 📄 **Multiple input formats**: Support for direct input, text files, and JSON files
+- 📄 **Simple**: Uses plaintext input files (one track ID per line)
+- 📁 **Organized**: Input files go in `input/` folder, output HTML files go in `output/` folder
 
 ## Installation
 
@@ -30,27 +30,20 @@ wave-code-generator = { path = "." }
 ### Command Line Interface
 
 ```bash
-# Generate from comma-separated track IDs
-wave-gen -t "69Kzq3FMkDwiSFBQzRckFD,3wUMcPzXcmaeW8QxTdyXQO" -o my_codes.html
+# Generate from plaintext input file
+wave-gen -i my_tracks.txt -t "My Playlist"
 
-# Generate from text file (one track ID per line)
-wave-gen -f track_ids.txt --title "My Playlist" --columns 3
+# Generate with custom output filename
+wave-gen -i my_tracks.txt -o custom_name.html -t "Custom Title"
 
-# Generate from JSON file
-wave-gen -j tracks.json --size 800 -o large_codes.html
-
-# Use example data if no input provided
-wave-gen
+# Input file automatically looked up in input/ folder
+# Output file automatically saved to output/ folder
 ```
 
 #### CLI Options
-- `-t, --tracks`: Comma-separated track IDs
-- `-f, --file`: Text file with track IDs (one per line)  
-- `-j, --json`: JSON file with array of track IDs
-- `-o, --output`: Output HTML file (default: wave_codes.html)
-- `--title`: Page title (default: "Spotify Codes Printable Page")
-- `-c, --columns`: Grid columns (default: 4)
-- `-s, --size`: Image size (default: 640)
+- `-i, --input`: Input text file with track IDs (one per line) - **REQUIRED**
+- `-o, --output`: Output HTML filename (saved in output/ folder)
+- `-t, --title`: Page title (default: "Spotify Codes Printable Page")
 
 ### Library Usage
 
@@ -83,29 +76,33 @@ let html = generate_wave_codes_page_with_config(&track_ids, &config);
 
 #### Loading from Files
 ```rust
-use wave_code_generator::{load_track_ids_from_file, load_track_ids_from_json};
+use wave_code_generator::load_track_ids_from_file;
 
 // From text file
-let track_ids = load_track_ids_from_file("tracks.txt")?;
+let track_ids = load_track_ids_from_file("input/tracks.txt")?;
+let html = generate_wave_codes_page(&track_ids, Some("My Playlist"));
+std::fs::write("output/my_codes.html", html)?;
+```
 
-// From JSON file  
-let track_ids = load_track_ids_from_json("tracks.json")?;
+### Project Structure
+
+```
+wave-code-generator/
+├── input/           # Put your track ID files here
+│   └── example.txt  # One track ID per line
+├── output/          # Generated HTML files go here
+│   └── example.html # Generated wave code pages
+└── src/             # Rust source code
 ```
 
 ### Running Examples
 
 ```bash
-# Run the basic example
-cargo run --example basic_usage
+# Run the built-in example
+cargo run --bin wave-code-generator
 
-# Run advanced configuration examples
-cargo run --example advanced_config
-
-# Run file input examples
-cargo run --example from_file
-
-# Run the main binary with example data
-cargo run
+# Run the CLI tool
+cargo run --bin wave-gen -- -i example.txt -t "Test Playlist"
 ```
 
 ## API Reference
@@ -126,9 +123,6 @@ Generate HTML for a single wave code.
 #### `load_track_ids_from_file(file_path: &str) -> Result<Vec<String>, std::io::Error>`
 Load track IDs from text file (one per line).
 
-#### `load_track_ids_from_json(file_path: &str) -> Result<Vec<String>, Box<dyn std::error::Error>>`
-Load track IDs from JSON array file.
-
 ### Configuration
 
 #### `WaveCodeConfig`
@@ -144,7 +138,7 @@ pub struct WaveCodeConfig {
 ## Output
 
 The generated HTML creates a clean, printable page with:
-- Customizable grid layout (1-12 columns)
+- Clean 4-column grid layout
 - No margins or padding for print optimization  
 - Responsive images that scale properly
 - Print-specific CSS rules for clean output
@@ -160,13 +154,6 @@ cargo build --release
 ### Testing
 ```bash
 cargo test
-```
-
-### Running Examples
-```bash
-cargo run --example basic_usage
-cargo run --example advanced_config  
-cargo run --example from_file
 ```
 
 ### CLI Usage
