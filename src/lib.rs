@@ -24,10 +24,11 @@
 //! std::fs::write("wave_codes.html", html).expect("Failed to write HTML file");
 //! ```
 
+use serde::{Deserialize, Serialize};
 use std::fmt::Write;
 
 /// Configuration for generating wave codes
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WaveCodeConfig {
     /// Page title
     pub title: String,

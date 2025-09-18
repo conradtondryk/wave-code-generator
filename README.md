@@ -27,20 +27,39 @@ wave-code-generator = { path = "." }
 
 ## Usage
 
-### Command Line Interface
+### Option 1: From Spotify Playlist URL (Recommended)
 
 ```bash
-# Generate from plaintext input file
+# Step 1: Extract track IDs from Spotify playlist
+cargo run --bin get-song-ids -- \
+  --url "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M" \
+  --client-id "your_client_id" \
+  --client-secret "your_client_secret" \
+  --output "my_playlist.txt"
+
+# Step 2: Generate HTML from extracted tracks
+cargo run --bin wave-gen -- -i my_playlist.txt -t "My Awesome Playlist"
+```
+
+### Option 2: From Manual Track List
+
+```bash
+# Create input/my_tracks.txt with track IDs (one per line), then:
 wave-gen -i my_tracks.txt -t "My Playlist"
 
 # Generate with custom output filename
 wave-gen -i my_tracks.txt -o custom_name.html -t "Custom Title"
-
-# Input file automatically looked up in input/ folder
-# Output file automatically saved to output/ folder
 ```
 
-#### CLI Options
+### CLI Options
+
+#### `get-song-ids` (Playlist Extractor)
+- `-u, --url`: Spotify playlist URL - **REQUIRED**
+- `--client-id`: Spotify Client ID - **REQUIRED** (see [setup guide](spotify_setup.md))
+- `--client-secret`: Spotify Client Secret - **REQUIRED** (see [setup guide](spotify_setup.md))
+- `-o, --output`: Output filename (saved in input/ folder)
+
+#### `wave-gen` (HTML Generator)
 - `-i, --input`: Input text file with track IDs (one per line) - **REQUIRED**
 - `-o, --output`: Output HTML filename (saved in output/ folder)
 - `-t, --title`: Page title (default: "Spotify Codes Printable Page")
